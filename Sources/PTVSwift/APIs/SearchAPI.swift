@@ -14,7 +14,7 @@ open class SearchAPI {
     /**
      * enum for parameter routeTypes
      */
-    public enum RouteTypes_searchSearch: String {
+    public enum RouteTypes_searchSearch: Int {
         case _0 = 0
         case _1 = 1
         case _2 = 2

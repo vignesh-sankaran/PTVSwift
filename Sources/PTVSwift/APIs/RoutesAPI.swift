@@ -14,7 +14,7 @@ open class RoutesAPI {
     /**
      * enum for parameter routeTypes
      */
-    public enum RouteTypes_routesOneOrMoreRoutes: String {
+    public enum RouteTypes_routesOneOrMoreRoutes: Int {
         case _0 = 0
         case _1 = 1
         case _2 = 2

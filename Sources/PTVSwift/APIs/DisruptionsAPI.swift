@@ -14,7 +14,7 @@ open class DisruptionsAPI {
     /**
      * enum for parameter routeTypes
      */
-    public enum RouteTypes_disruptionsGetAllDisruptions: String {
+    public enum RouteTypes_disruptionsGetAllDisruptions: Int {
         case _0 = 0
         case _1 = 1
         case _2 = 2
@@ -25,7 +25,7 @@ open class DisruptionsAPI {
     /**
      * enum for parameter disruptionModes
      */
-    public enum DisruptionModes_disruptionsGetAllDisruptions: String {
+    public enum DisruptionModes_disruptionsGetAllDisruptions: Int {
         case _1 = 1
         case _2 = 2
         case _3 = 3

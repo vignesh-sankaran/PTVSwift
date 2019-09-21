@@ -98,7 +98,7 @@ open class StopsAPI {
     /**
      * enum for parameter routeTypes
      */
-    public enum RouteTypes_stopsStopsByGeolocation: String {
+    public enum RouteTypes_stopsStopsByGeolocation: Int {
         case _0 = 0
         case _1 = 1
         case _2 = 2

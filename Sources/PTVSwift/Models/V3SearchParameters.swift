@@ -11,7 +11,7 @@ import Foundation
 
 public struct V3SearchParameters: Codable {
 
-    public enum RouteTypes: String, Codable {
+    public enum RouteTypes: Int, Codable {
         case _0 = 0
         case _1 = 1
         case _2 = 2

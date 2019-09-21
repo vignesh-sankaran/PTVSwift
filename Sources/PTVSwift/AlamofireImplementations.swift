@@ -69,7 +69,7 @@ open class AlamofireRequestBuilder<T>: RequestBuilder<T> {
      */
     open func createURLRequest() -> URLRequest? {
         let encoding: ParameterEncoding = isBody ? JSONDataEncoding() : URLEncoding()
-        guard let originalRequest = try? URLRequest(url: URLString, method: HTTPMethod(rawValue: method)!, headers: buildHeaders()) else { return nil }
+        guard let originalRequest = try? URLRequest(url: URLString, method: HTTPMethod(rawValue: method), headers: buildHeaders()) else { return nil }
         return try? encoding.encode(originalRequest, with: parameters)
     }
 
