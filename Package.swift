@@ -1,26 +1,27 @@
 // swift-tools-version:5.1
+// The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
     name: "PTVSwift",
-    platforms: [
-        .macOS(.v10_15), .iOS(.v12),
-    ],
     products: [
         .library(
             name: "PTVSwift",
             targets: ["PTVSwift"]),
     ],
-    dependencies: [
-        .package(url: "https://github.com/Alamofire/Alamofire.git", from: "5.0.0-rc.2")
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "PTVSwift",
-            dependencies: ["Alamofire"]),
+            dependencies: [],
+            path: "Sources"),
         .testTarget(
-            name: "PTVSwiftTests",
+            name: "Unit",
             dependencies: ["PTVSwift"]),
+        .testTarget(
+            name: "Integration",
+            dependencies: ["PTVSwift"]
+        ),
     ]
 )
