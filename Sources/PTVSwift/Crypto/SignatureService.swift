@@ -22,7 +22,7 @@ class SigningService {
         
         // Append the developer ID to the Components
         let developerIDQueryItem = URLQueryItem(name: "devId", value: credentials.devId)
-        signedURLComponents.queryItems?.append(developerIDQueryItem)
+        signedURLComponents.queryItems = [developerIDQueryItem]
         
         
         // Get the part of the URL after the base URL
