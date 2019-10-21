@@ -10,18 +10,22 @@ import XCTest
 
 final class SignatureServiceTests: XCTestCase {
     
-    var urlComponents = URLComponents()
+    
     
     override func setUp() {
+        
+    }
+    
+    func testSignURL() {
         Configuration.devId = ""
         Configuration.securityKey = ""
+        
+        var urlComponents = URLComponents()
         
         urlComponents.scheme = PROTOCOL
         urlComponents.host = BASE_URL
         urlComponents.path = "/\(VERSION)/routes"
-    }
-    
-    func testSignURL() {
+        
         // Test that the signature component is not nil
         let signedURLComponents = SigningService().signURL(urlComponents: urlComponents)
         

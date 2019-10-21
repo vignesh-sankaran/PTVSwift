@@ -6,6 +6,6 @@
 //
 
 struct Configuration {
-    static var devId = ""
-    static var securityKey = ""
+    static var devId: String?
+    static var securityKey: String?
 }
