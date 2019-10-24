@@ -5,6 +5,11 @@ import PackageDescription
 
 let package = Package(
     name: "PTVSwift",
+    platforms: [
+        .macOS(.v10_15),
+        .iOS(.v13),
+        .watchOS(.v5)
+    ],
     products: [
         .library(
             name: "PTVSwift",
