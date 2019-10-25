@@ -14,8 +14,7 @@ class Routes {
         session = URLSession()
     }
     
-    func getAllRoutes(routeTypes: [Int]?) {
-        
+    func getAllRoutes(routeTypes: [Int]?) throws {
         var routeTypesQuery: URLQueryItem?
         
         if let routeTypes = routeTypes {
@@ -27,23 +26,24 @@ class Routes {
         requestURLComponents.host = BASE_URL
         requestURLComponents.path = "/\(VERSION)/routes"
         
-        
-        
         if let routeTypesQuery = routeTypesQuery {
             requestURLComponents.queryItems?.append(routeTypesQuery)
         }
+        
+        let signedURLComponents = try SigningService().signURL(urlComponents: requestURLComponents)
 
-        // Sign the URLComponents
-        let signedURLComponents = SigningService().signURL(urlComponents: requestURLComponents)
-        
-        // Convert to URL
-        
+        guard let signedRequestURL = signedURLComponents.url else {
+            throw PTVSwiftError.conversionToURLFailed
+        }
         
         // Send request
+        session.dataTask(with: signedRequestURL) { data, response, error in
+            
+            // Provide callback
+            
+        }
         
-        
-        // Provide callback
-        
+
         
     }
 }

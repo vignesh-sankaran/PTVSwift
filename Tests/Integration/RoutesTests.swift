@@ -5,4 +5,11 @@ final class RoutesTest: XCTestRun {
     
     
     
+    func testRoutesWithRouteTypes() {
+        
+    }
+    
+    func testRoutesWithoutRouteTypes() {
+        
+    }
 }

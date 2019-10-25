@@ -12,13 +12,13 @@ struct Credentials: Decodable {
     let securityKey: String
 }
 
-func retrieveCredentials() -> Credentials {
+func retrieveCredentials() throws -> Credentials {
     guard let devId = Configuration.devId else {
-        fatalError("devId has not been configured!")
+        throw PTVSwiftError.noDevId
     }
     
     guard let securityKey = Configuration.securityKey else {
-        fatalError("securityKey has not been configured!")
+        throw PTVSwiftError.noSecurityKey
     }
     
     let credentials = Credentials(devId: devId, securityKey: securityKey)

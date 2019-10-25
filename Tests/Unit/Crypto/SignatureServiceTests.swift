@@ -31,7 +31,7 @@ final class SignatureServiceTests: XCTestCase {
     }
     
     func testSignURL() {
-        let signedURLComponents = SigningService().signURL(urlComponents: urlComponents)
+        let signedURLComponents = try? SigningService().signURL(urlComponents: urlComponents)
         
         XCTAssertNotNil(signedURLComponents, "Signed URL is nil!")
     }
