@@ -8,12 +8,7 @@
 import Foundation
 
 class Routes {
-    let session: URLSession
-    
-    init() {
-        session = URLSession()
-    }
-    
+
     func getAllRoutes(routeTypes: [Int]?, requestCompletionHandler: @escaping (V3Routes?, PTVSwiftError?) -> ())  {
         var routeTypesQuery: URLQueryItem?
         
@@ -34,10 +29,10 @@ class Routes {
             let signedURLComponents = try SigningService().signURL(urlComponents: requestURLComponents)
             
             guard let signedRequestURL = signedURLComponents.url else {
-                       return requestCompletionHandler(nil, PTVSwiftError.conversionToURLError)
+                return requestCompletionHandler(nil, PTVSwiftError.conversionToURLError)
             }
             
-            let dataTask = session.dataTask(with: signedRequestURL) { data, response, error in
+            let dataTask = URLSession.shared.dataTask(with: signedRequestURL) { data, response, error in
                 if let error = error {
                     requestCompletionHandler(nil, PTVSwiftError.clientError(error))
                 }

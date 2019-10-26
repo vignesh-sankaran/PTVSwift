@@ -8,7 +8,7 @@
 import Foundation
 
 struct V3Routes: Decodable {
-    let route: Route
+    let routes: [Route]
     let status: Status
 }
 
@@ -19,6 +19,15 @@ struct Route: Decodable {
     let routeName: String
     let routeNumber: String
     let routeGTFSId: String
+    
+    enum CodingKeys: String, CodingKey {
+        case routeServiceStatus = "route_service_status"
+        case routeType = "route_type"
+        case routeId = "route_id"
+        case routeName = "route_name"
+        case routeNumber = "route_number"
+        case routeGTFSId = "route_gtfs_id"
+    }
 }
 
 struct RouteServiceStatus: Decodable {
