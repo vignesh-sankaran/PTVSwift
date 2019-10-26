@@ -14,7 +14,7 @@ class Routes {
         session = URLSession()
     }
     
-    func getAllRoutes(routeTypes: [Int]?) throws {
+    func getAllRoutes(routeTypes: [Int]?, requestCompletionHandler: @escaping (V3Routes?, PTVSwiftError?) -> ())  {
         var routeTypesQuery: URLQueryItem?
         
         if let routeTypes = routeTypes {
@@ -30,20 +30,41 @@ class Routes {
             requestURLComponents.queryItems?.append(routeTypesQuery)
         }
         
-        let signedURLComponents = try SigningService().signURL(urlComponents: requestURLComponents)
-
-        guard let signedRequestURL = signedURLComponents.url else {
-            throw PTVSwiftError.conversionToURLFailed
-        }
-        
-        // Send request
-        session.dataTask(with: signedRequestURL) { data, response, error in
+        do {
+            let signedURLComponents = try SigningService().signURL(urlComponents: requestURLComponents)
             
-            // Provide callback
+            guard let signedRequestURL = signedURLComponents.url else {
+                       return requestCompletionHandler(nil, PTVSwiftError.conversionToURLError)
+            }
             
+            let dataTask = session.dataTask(with: signedRequestURL) { data, response, error in
+                if let error = error {
+                    requestCompletionHandler(nil, PTVSwiftError.clientError(error))
+                }
+                
+                if let httpResponse = response as? HTTPURLResponse {
+                    if httpResponse.statusCode > 299 {
+                        requestCompletionHandler(nil, PTVSwiftError.requestError(statusCode: httpResponse.statusCode))
+                    }
+                }
+                
+                let decoder = JSONDecoder()
+                
+                do {
+                    if let data = data {
+                        let routes = try decoder.decode(V3Routes.self, from: data)
+                        
+                        requestCompletionHandler(routes, nil)
+                    }
+                    
+                } catch {
+                    requestCompletionHandler(nil, PTVSwiftError.decodeResponseModelError(error))
+                }
+            }
+            
+            dataTask.resume()
+        } catch {
+            requestCompletionHandler(nil, error as? PTVSwiftError)
         }
-        
-
-        
     }
 }

@@ -12,5 +12,8 @@ enum PTVSwiftError: Error {
     case noSecurityKey
     case noQueryString
     case stringToDataConversionFailed(String)
-    case conversionToURLFailed
+    case conversionToURLError
+    case clientError(Error)
+    case requestError(statusCode: Int)
+    case decodeResponseModelError(Error)
 }
