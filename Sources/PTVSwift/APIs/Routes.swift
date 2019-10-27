@@ -10,21 +10,9 @@ import Foundation
 class Routes {
 
     func getAllRoutes(routeTypes: [Int]?, requestCompletionHandler: @escaping (V3Routes?, PTVSwiftError?) -> ())  {
-        var routeTypesQuery: URLQueryItem?
-        
-        if let routeTypes = routeTypes {
-            routeTypesQuery = URLQueryItem(name: "route_types", value: routeTypes.description)
-        }
-        
-        var requestURLComponents = URLComponents()
-        requestURLComponents.scheme = PROTOCOL
-        requestURLComponents.host = BASE_URL
-        requestURLComponents.path = "/\(VERSION)/routes"
-        
-        if let routeTypesQuery = routeTypesQuery {
-            requestURLComponents.queryItems?.append(routeTypesQuery)
-        }
-        
+        let requestURLComponents = constructURL(routeTypes: routeTypes)
+
+        // Need to break this out somehow
         do {
             let signedURLComponents = try SigningService().signURL(urlComponents: requestURLComponents)
             
@@ -61,5 +49,24 @@ class Routes {
         } catch {
             requestCompletionHandler(nil, error as? PTVSwiftError)
         }
+    }
+    
+    func constructURL(routeTypes: [Int]?) -> URLComponents {
+        var routeTypesQuery: URLQueryItem?
+        
+        if let routeTypes = routeTypes {
+            routeTypesQuery = URLQueryItem(name: "route_types", value: routeTypes.description)
+        }
+        
+        var requestURLComponents = URLComponents()
+        requestURLComponents.scheme = PROTOCOL
+        requestURLComponents.host = BASE_URL
+        requestURLComponents.path = "/\(VERSION)/routes"
+        
+        if let routeTypesQuery = routeTypesQuery {
+            requestURLComponents.queryItems?.append(routeTypesQuery)
+        }
+        
+        return requestURLComponents
     }
 }
