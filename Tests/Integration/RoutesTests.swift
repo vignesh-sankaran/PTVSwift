@@ -30,6 +30,15 @@ final class RoutesTest: XCTestCase {
     }
     
     func testRoutesWithoutRouteTypes() {
+       let expectation = XCTestExpectation(description: "Routes API request")
         
+        Routes().getAllRoutes(routeTypes: nil) { response, error in
+            XCTAssertNotNil(response, "Response is nil!")
+            XCTAssertNil(error, "Error has occurred!")
+            
+            expectation.fulfill()
+        }
+        
+        XCTWaiter().wait(for: [expectation], timeout: 15.0)
     }
 }

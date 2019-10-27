@@ -29,6 +29,15 @@ class SigningService {
         
         let urlSuffix = "\(urlComponents.path)?\(queryString)"
         
+        let signatureString = try generateSignature(urlSuffix: urlSuffix)
+        let signatureQueryItem = URLQueryItem(name: "signature", value: signatureString)
+        
+        signedURLComponents.queryItems?.append(signatureQueryItem)
+
+        return signedURLComponents
+    }
+    
+    func generateSignature(urlSuffix: String) throws -> String {
         guard let urlSuffixData = urlSuffix.data(using: .utf8) else {
             throw PTVSwiftError.noQueryString
         }
@@ -45,11 +54,7 @@ class SigningService {
             String(format: "%02x", x)
         }
         
-        let signatureString = String(signature)
-        let signatureQueryItem = URLQueryItem(name: "signature", value: signatureString)
-        
-        signedURLComponents.queryItems?.append(signatureQueryItem)
-
-        return signedURLComponents
+        return String(signature)
     }
+    
 }
