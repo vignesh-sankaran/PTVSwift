@@ -7,9 +7,9 @@
 
 import Foundation
 
-class Routes {
+public class Routes {
 
-    func getAllRoutes(routeTypes: [Int]?, requestCompletionHandler: @escaping (V3Routes?, PTVSwiftError?) -> ())  {
+    public func getAllRoutes(routeTypes: [Int]?, requestCompletionHandler: @escaping (V3Routes?, PTVSwiftError?) -> ())  {
         let requestURLComponents = constructURL(routeTypes: routeTypes)
 
         guard let signedURLComponents = try? SigningService().signURL(urlComponents: requestURLComponents) else {

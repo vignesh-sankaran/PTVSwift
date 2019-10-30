@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum PTVSwiftError: Error {
+public enum PTVSwiftError: Error {
     case noDevId
     case noSecurityKey
     case noQueryString
