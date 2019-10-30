@@ -8,6 +8,8 @@
 import Foundation
 
 public class Routes {
+    
+    public init() {}
 
     public func getAllRoutes(routeTypes: [Int]?, requestCompletionHandler: @escaping (V3Routes?, PTVSwiftError?) -> ())  {
         let requestURLComponents = constructURL(routeTypes: routeTypes)
