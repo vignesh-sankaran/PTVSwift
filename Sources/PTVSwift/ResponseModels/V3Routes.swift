@@ -7,18 +7,18 @@
 
 import Foundation
 
-public struct V3Routes: Decodable {
-    let routes: [Route]
-    let status: Status
+public struct V3Routes: Codable {
+    public let routes: [Route]
+    public let status: Status
 }
 
-public struct Route: Decodable {
-    let routeServiceStatus: RouteServiceStatus
-    let routeType: Int
-    let routeId: Int
-    let routeName: String
-    let routeNumber: String
-    let routeGTFSId: String
+public struct Route: Codable {
+    public let routeServiceStatus: RouteServiceStatus
+    public let routeType: Int
+    public let routeId: Int
+    public let routeName: String
+    public let routeNumber: String
+    public let routeGTFSId: String
     
     enum CodingKeys: String, CodingKey {
         case routeServiceStatus = "route_service_status"
@@ -30,7 +30,7 @@ public struct Route: Decodable {
     }
 }
 
-public struct RouteServiceStatus: Decodable {
-    let description: String
-    let timestamp: String
+public struct RouteServiceStatus: Codable {
+    public let description: String
+    public let timestamp: String
 }
