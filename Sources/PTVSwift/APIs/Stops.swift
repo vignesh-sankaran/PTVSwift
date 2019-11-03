@@ -11,9 +11,9 @@ public class Stops {
     
     public init() {}
     
-    public func getStopsByRouteId(routeId: Int, routeType: Int, directionId: Int?, stopDisruptions: Bool?, requestCompletionHandler: @escaping (V3Stops?, PTVSwiftError?) -> ()) {
+    public func getStopsByRouteId(routeId: Int, routeType: Int, requestCompletionHandler: @escaping (V3Stops?, PTVSwiftError?) -> ()) {
         
-        let requestURLComponents = constructURL(routeId: routeId, routeType: routeType, directionId: directionId, stopDisruptions: stopDisruptions)
+        let requestURLComponents = constructURL(routeId: routeId, routeType: routeType)
         
         guard let signedURLComponents = try? SigningService().signURL(urlComponents: requestURLComponents) else {
             return requestCompletionHandler(nil, PTVSwiftError.signURLError)
@@ -28,36 +28,12 @@ public class Stops {
         dataTask.resume()
     }
     
-    func constructURL(routeId: Int, routeType: Int, directionId: Int?, stopDisruptions: Bool?) -> URLComponents {
-        let routeIdQueryItem = URLQueryItem(name: "route_id", value: String(routeId))
-        let routeTypeQueryItem = URLQueryItem(name: "route_type", value: String(routeType))
-        
-        var directionIdQueryItem: URLQueryItem?
-        var stopDisruptionsQueryItem: URLQueryItem?
-        
-        if let directionId = directionId {
-            directionIdQueryItem = URLQueryItem(name: "direction_id", value: String(directionId))
-        }
-        
-        if let stopDisruptions = stopDisruptions {
-            stopDisruptionsQueryItem = URLQueryItem(name: "stop_disruptions", value: stopDisruptions.description)
-        }
-        
+    func constructURL(routeId: Int, routeType: Int) -> URLComponents {
         var requestURLComponents = URLComponents()
         
         requestURLComponents.scheme = PROTOCOL
         requestURLComponents.host = BASE_URL
-        requestURLComponents.path = "/\(VERSION)/routes"
-        
-        requestURLComponents.queryItems = [routeIdQueryItem, routeTypeQueryItem]
-
-        if let directionIdQueryItem = directionIdQueryItem {
-            requestURLComponents.queryItems?.append(directionIdQueryItem)
-        }
-        
-        if let stopDisruptionsQueryItem = stopDisruptionsQueryItem {
-            requestURLComponents.queryItems?.append(stopDisruptionsQueryItem)
-        }
+        requestURLComponents.path = "/\(VERSION)/stops/route/\(routeId)/route_type/\(routeType)"
         
         return requestURLComponents
     }

@@ -26,7 +26,7 @@ final class StopsTests: XCTestCase {
     func testStopsByRouteId() {
         let expectation = XCTestExpectation(description: "Stops API request")
         
-        Stops().getStopsByRouteId(routeId: 1063, routeType: 0, directionId: nil, stopDisruptions: nil) { response, error in
+        Stops().getStopsByRouteId(routeId: 12, routeType: 0) { response, error in
             XCTAssertNotNil(response, "Response is nil!")
             XCTAssertNil(error, "Error has occurred!")
             

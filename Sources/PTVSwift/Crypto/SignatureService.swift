@@ -21,7 +21,12 @@ class SigningService {
         var signedURLComponents = urlComponents
         
         let developerIDQueryItem = URLQueryItem(name: "devId", value: credentials.devId)
-        signedURLComponents.queryItems = [developerIDQueryItem]
+        
+        if signedURLComponents.queryItems == nil {
+            signedURLComponents.queryItems = [developerIDQueryItem]
+        } else {
+            signedURLComponents.queryItems?.append(developerIDQueryItem)
+        }
         
         guard let queryString = signedURLComponents.query else {
             throw PTVSwiftError.noQueryString

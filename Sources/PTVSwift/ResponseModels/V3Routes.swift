@@ -15,18 +15,18 @@ public struct V3Routes: Decodable {
 public struct Route: Decodable {
     public let routeServiceStatus: RouteServiceStatus
     public let routeType: Int
-    public let routeId: Int
+    public let routeID: Int
     public let routeName: String
     public let routeNumber: String
-    public let routeGTFSId: String
+    public let routeGTFSID: String
     
     enum CodingKeys: String, CodingKey {
         case routeServiceStatus = "route_service_status"
         case routeType = "route_type"
-        case routeId = "route_id"
+        case routeID = "route_id"
         case routeName = "route_name"
         case routeNumber = "route_number"
-        case routeGTFSId = "route_gtfs_id"
+        case routeGTFSID = "route_gtfs_id"
     }
 }
 
