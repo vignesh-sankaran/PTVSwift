@@ -7,12 +7,12 @@
 
 import Foundation
 
-public struct V3Routes: Codable {
+public struct V3Routes: Decodable {
     public let routes: [Route]
     public let status: Status
 }
 
-public struct Route: Codable {
+public struct Route: Decodable {
     public let routeServiceStatus: RouteServiceStatus
     public let routeType: Int
     public let routeId: Int
@@ -30,7 +30,7 @@ public struct Route: Codable {
     }
 }
 
-public struct RouteServiceStatus: Codable {
+public struct RouteServiceStatus: Decodable {
     public let description: String
     public let timestamp: String
 }
