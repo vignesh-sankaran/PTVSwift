@@ -20,7 +20,7 @@ class SigningService {
     func signURL(urlComponents: URLComponents) throws -> URLComponents {
         var signedURLComponents = urlComponents
         
-        let developerIDQueryItem = URLQueryItem(name: "devId", value: credentials.devId)
+        let developerIDQueryItem = URLQueryItem(name: "devid", value: credentials.devId)
         
         if signedURLComponents.queryItems == nil {
             signedURLComponents.queryItems = [developerIDQueryItem]
@@ -43,21 +43,18 @@ class SigningService {
     }
     
     func generateSignature(urlSuffix: String) throws -> String {
-        guard let urlSuffixData = urlSuffix.data(using: .utf8) else {
+        guard let urlSuffixData = urlSuffix.data(using: .ascii) else {
             throw PTVSwiftError.noQueryString
         }
         
-        guard let securityKeyData = credentials.securityKey.data(using: .utf8) else {
+        guard let securityKeyData = credentials.securityKey.data(using: .ascii) else {
             throw PTVSwiftError.noQueryString
         }
         
         let key = SymmetricKey(data: securityKeyData)
-        
         let authenticationCode = HMAC<Insecure.SHA1>.authenticationCode(for: urlSuffixData, using: key)
-        
-        let signature = authenticationCode.flatMap { x in
-            String(format: "%02x", x)
-        }
+       
+        let signature = authenticationCode.flatMap { String(format: "%02x", $0) }
         
         return String(signature)
     }
