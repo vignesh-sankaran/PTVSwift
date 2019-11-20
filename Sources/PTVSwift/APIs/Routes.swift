@@ -31,8 +31,7 @@ public class Routes {
         var routeTypesQuery: URLQueryItem?
         
         if let routeTypes = routeTypes {
-            let routeTypesString = generateRouteTypesString(routeTypes)
-            routeTypesQuery = URLQueryItem(name: "route_types", value: routeTypesString)
+            routeTypesQuery = URLQueryItem(name: "route_types", value: routeTypes.description)
         }
         
         var requestURLComponents = URLComponents()
@@ -74,12 +73,5 @@ public class Routes {
         }
         
         return dataTask
-    }
-    
-    func generateRouteTypesString(_ routeTypes: [Int]) -> String {
-        let routeTypesRawString = routeTypes.description
-        let routeTypesString = routeTypesRawString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        
-        return routeTypesString
     }
 }

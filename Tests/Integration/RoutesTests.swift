@@ -19,7 +19,7 @@ final class RoutesTest: XCTestCase {
     func testRoutesWithRouteTypes() {
         let expectation = XCTestExpectation(description: "Routes API request")
         
-        Routes().getAllRoutes(routeTypes: [0]) { response, error in
+        Routes().getAllRoutes(routeTypes: [0, 1]) { response, error in
             XCTAssertNotNil(response, "Response is nil!")
             XCTAssertNil(error, "Error has occurred!")
             

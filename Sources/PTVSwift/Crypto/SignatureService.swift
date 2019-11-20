@@ -34,7 +34,11 @@ class SigningService {
         
         let urlSuffix = "\(urlComponents.path)?\(queryString)"
         
-        let signatureString = try generateSignature(urlSuffix: urlSuffix)
+        guard let encodedUrlSuffix = urlSuffix.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            throw PTVSwiftError.signURLError
+        }
+        
+        let signatureString = try generateSignature(urlSuffix: encodedUrlSuffix)
         let signatureQueryItem = URLQueryItem(name: "signature", value: signatureString)
         
         signedURLComponents.queryItems?.append(signatureQueryItem)
@@ -58,5 +62,4 @@ class SigningService {
         
         return String(signature)
     }
-    
 }
