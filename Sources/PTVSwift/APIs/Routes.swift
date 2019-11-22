@@ -27,6 +27,20 @@ public class Routes {
         dataTask.resume()
     }
     
+    public func getAllRoutesURL(routeTypes: [Int]?) -> Result<URL, PTVSwiftError> {
+        let requestURLComponents = constructURL(routeTypes: routeTypes)
+        
+        guard let signedURLComponents = try? SigningService().signURL(urlComponents: requestURLComponents) else {
+            return .failure(PTVSwiftError.signURLError)
+        }
+        
+        guard let signedRequestURL = signedURLComponents.url else {
+            return .failure(PTVSwiftError.conversionToURLError)
+        }
+        
+        return .success(signedRequestURL)
+    }
+    
     func constructURL(routeTypes: [Int]?) -> URLComponents {
         var routeTypesQuery: URLQueryItem?
         

@@ -28,6 +28,21 @@ public class Stops {
         dataTask.resume()
     }
     
+    public func getStopsByRouteIdURL(routeId: Int, routeType: Int) -> Result<URL, PTVSwiftError> {
+        
+        let requestURLComponents = constructURL(routeId: routeId, routeType: routeType)
+        
+        guard let signedURLComponents = try? SigningService().signURL(urlComponents: requestURLComponents) else {
+            return .failure(PTVSwiftError.signURLError)
+        }
+        
+        guard let signedRequestURL = signedURLComponents.url else {
+            return .failure(PTVSwiftError.conversionToURLError)
+        }
+        
+        return .success(signedRequestURL)
+    }
+    
     func constructURL(routeId: Int, routeType: Int) -> URLComponents {
         var requestURLComponents = URLComponents()
         
