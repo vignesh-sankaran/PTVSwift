@@ -9,7 +9,7 @@ import Foundation
 
 public struct V3Stops: Decodable {
     public let stops: [Stop]
-    public let status: Status
+    public let status: V3Status
 }
 
 public struct Stop: Decodable {

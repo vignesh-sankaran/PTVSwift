@@ -67,7 +67,7 @@ public class Routes {
             }
             
             if let httpResponse = response as? HTTPURLResponse {
-                if httpResponse.statusCode > 299 {
+                if httpResponse.statusCode > 200 {
                     requestCompletionHandler(nil, PTVSwiftError.requestError(statusCode: httpResponse.statusCode))
                 }
             }

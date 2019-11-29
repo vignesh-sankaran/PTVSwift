@@ -9,7 +9,7 @@ import Foundation
 
 public struct V3Routes: Decodable {
     public let routes: [Route]
-    public let status: Status
+    public let status: V3Status
 }
 
 public struct Route: Decodable {

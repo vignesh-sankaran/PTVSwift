@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Status: Decodable {
+public struct V3Status: Decodable {
     public let version: String
     public let health: Int
 }
