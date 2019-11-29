@@ -1,7 +1,7 @@
 import XCTest
 @testable import PTVSwift
 
-final class RoutesEndpointTests: XCTest {
+final class RoutesEndpointTests: XCTestCase {
     
     override func setUp() {
         guard let devId = ProcessInfo.processInfo.environment["DEV_ID"] else {

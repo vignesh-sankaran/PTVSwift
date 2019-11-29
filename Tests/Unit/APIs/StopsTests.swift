@@ -8,7 +8,7 @@
 import XCTest
 @testable import PTVSwift
 
-final class StopsTests: XCTest {
+final class StopsTests: XCTestCase {
     
     override func setUp() {
         guard let devId = ProcessInfo.processInfo.environment["DEV_ID"] else {
