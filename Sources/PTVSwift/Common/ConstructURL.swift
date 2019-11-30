@@ -18,9 +18,24 @@ class ConstructURL {
         urlComponents.host = BASE_URL
         urlComponents.path = "/\(VERSION)/\(path)"
         
-        // Evaluate if there are any query items
         if let parameters = parameters {
             // - Convert to percent encoded if they exist
+            for parameter in parameters {
+                
+                // Possible edge cases:
+                // - Query parameter is an array of Ints
+                // - Query parameter is an Int
+                if let array = parameter.value as? Array<Int> {
+                    let queryItem = URLQueryItem(name: parameter.key, value: array.description)
+                    if let _ = urlComponents.queryItems {
+                        urlComponents.queryItems?.append(queryItem)
+                    } else {
+                        urlComponents.queryItems = [queryItem]
+                    }
+                }
+            }
+            
+            
         }
 
         guard let signedURLComponents = try? SigningService().signURL(urlComponents: urlComponents) else {

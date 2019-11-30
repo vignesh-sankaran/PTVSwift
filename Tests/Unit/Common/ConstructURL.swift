@@ -27,14 +27,28 @@ final class ConstructURLTests: XCTestCase {
         let pathString = "routes"
         let result = ConstructURL.generateURL(path: pathString, parameters: nil)
         
-        XCTAssertNoThrow(try result.get(), "Failed to successfully generate a URL!")
+        XCTAssertNoThrow(try result.get(), "URL failed to be generated!")
     }
     
-    func testConstructURLWithSingleQueryItem() {
+    func testConstructURLWithSingleArrayQueryItem() {
+        let result = ConstructURL.generateURL(path: "routes", parameters: ["route_types": [0]])
         
+        guard let url = try? result.get() else {
+            return XCTFail("URL failed to be generated!")
+        }
+        
+        XCTAssert((url.query?.contains("route_types"))!, "Query is not contained in the query string!")
+
     }
     
-    func testConstructURLWithMultipleQueryItems() {
+    func testConstructURLWithMultipleIntQueryItems() {
+        let result = ConstructURL.generateURL(path: "stops", parameters: ["route": 5, "route_type": 0])
         
+        guard let url = try? result.get() else {
+            return XCTFail("URL failed to be generated!")
+        }
+        
+        XCTAssert((url.query?.contains("route"))!, "route query is not contained in the query string!")
+        XCTAssert((url.query?.contains("route_type"))!, "route_type query is not contained in the query string!")
     }
 }
