@@ -18,4 +18,12 @@ public struct V3Direction: Decodable {
     public let directionName: String
     public let routeId: Int
     public let routeType: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case routeDirectionDescription = "route_direction_description"
+        case directionId = "direction_id"
+        case directionName = "direction_name"
+        case routeId = "route_id"
+        case routeType = "route_type"
+    }
 }

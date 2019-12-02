@@ -12,10 +12,20 @@ public class Directions {
     
     public init() {}
     
-    public func getAllRoutes(routeId: Int) -> Result<URL, Error> {
+    public func getAllDirectionsForRoute(routeId: Int) -> Result<AnyPublisher<V3Directions, Error>, Error> {
         let path = "directions/route/\(routeId)"
         let urlResult = ConstructURL.generateURL(path: path, parameters: nil)
         
-        return urlResult
+        switch urlResult {
+        case .success(let url):
+            return .success(URLSession
+                .shared
+                .dataTaskPublisher(for: url)
+                .map { $0.data }
+                .decode(type: V3Directions.self, decoder: JSONDecoder())
+                .eraseToAnyPublisher())
+        case .failure(let error):
+            return .failure(error)
+        }
     }
 }
