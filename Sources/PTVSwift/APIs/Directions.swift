@@ -12,9 +12,10 @@ public class Directions {
     
     public init() {}
     
-//    public func getAllRoutes(routeId: Int) -> AnyPublisher<V3Routes, Error> {
-//        // Construct URL
-//
-//        // Set up publisher, return it
-//    }
+    public func getAllRoutes(routeId: Int) -> Result<URL, Error> {
+        let path = "directions/route/\(routeId)"
+        let urlResult = ConstructURL.generateURL(path: path, parameters: nil)
+        
+        return urlResult
+    }
 }

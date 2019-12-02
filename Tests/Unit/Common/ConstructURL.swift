@@ -38,17 +38,5 @@ final class ConstructURLTests: XCTestCase {
         }
         
         XCTAssert((url.query?.contains("route_types"))!, "Query is not contained in the query string!")
-
-    }
-    
-    func testConstructURLWithMultipleIntQueryItems() {
-        let result = ConstructURL.generateURL(path: "stops", parameters: ["route": 5, "route_type": 0])
-        
-        guard let url = try? result.get() else {
-            return XCTFail("URL failed to be generated!")
-        }
-        
-        XCTAssert((url.query?.contains("route"))!, "route query is not contained in the query string!")
-        XCTAssert((url.query?.contains("route_type"))!, "route_type query is not contained in the query string!")
     }
 }

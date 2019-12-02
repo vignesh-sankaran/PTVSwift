@@ -19,12 +19,10 @@ class ConstructURL {
         urlComponents.path = "/\(VERSION)/\(path)"
         
         if let parameters = parameters {
-            // - Convert to percent encoded if they exist
             for parameter in parameters {
                 
                 // Possible edge cases:
                 // - Query parameter is an array of Ints
-                // - Query parameter is an Int
                 if let array = parameter.value as? Array<Int> {
                     let queryItem = URLQueryItem(name: parameter.key, value: array.description)
                     if let _ = urlComponents.queryItems {
@@ -34,8 +32,6 @@ class ConstructURL {
                     }
                 }
             }
-            
-            
         }
 
         guard let signedURLComponents = try? SigningService().signURL(urlComponents: urlComponents) else {
@@ -49,5 +45,3 @@ class ConstructURL {
         return .success(signedRequestURL)
     }
 }
-
-
