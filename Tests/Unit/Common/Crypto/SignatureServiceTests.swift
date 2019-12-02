@@ -37,6 +37,17 @@ final class SignatureServiceTests: XCTestCase {
     }
     
     func testGenerateSignature() {
+        // Set up mock credentials
+        Configuration.devId = "0"
+        Configuration.securityKey = "0"
         
+        let urlSuffix = "/v3/routes?route_types=%5B0%5D&devid=0"
+        let result = try? SigningService().generateSignature(urlSuffix: urlSuffix)
+        
+        guard let signature = result else {
+            return XCTFail("Failed to generate signature!")
+        }
+        
+        XCTAssertEqual(signature.uppercased(), "CB865179BB438544A910B9CE26905B54F9FA25EB", "Signatures are not equal!")
     }
 }
