@@ -4,14 +4,14 @@
 //
 //  Created by Home on 17/10/19.
 //
-
+import Combine
 import Foundation
 
 public class Routes {
     
     public init() {}
 
-    public func getAllRoutes(routeTypes: [Int]?, requestCompletionHandler: @escaping (V3Routes?, PTVSwiftError?) -> ())  {
+    public func getAllRoutes(routeTypes: [Int]?) -> Result<AnyPublisher<V3Routes, Error>, Error> {
         var urlParameters: [String: Any]? = nil
         
         if let routeTypes = routeTypes {
@@ -22,40 +22,14 @@ public class Routes {
         
         switch urlResult {
         case .success(let url):
-            let dataTask = createDataTask(url: url, requestCompletionHandler: requestCompletionHandler)
-            
-            dataTask.resume()
-        case .failure(_):
-            return requestCompletionHandler(nil, PTVSwiftError.conversionToURLError)
+            return .success(URLSession
+                .shared
+                .dataTaskPublisher(for: url)
+                .map { $0.data }
+                .decode(type: V3Routes.self, decoder: JSONDecoder())
+                .eraseToAnyPublisher())
+        case .failure(let error):
+            return .failure(error)
         }
-    }
-    
-    func createDataTask(url: URL, requestCompletionHandler: @escaping (V3Routes?, PTVSwiftError?) -> ()) -> URLSessionDataTask {
-        let dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                requestCompletionHandler(nil, PTVSwiftError.clientError(error))
-            }
-            
-            if let httpResponse = response as? HTTPURLResponse {
-                if httpResponse.statusCode > 200 {
-                    requestCompletionHandler(nil, PTVSwiftError.requestError(statusCode: httpResponse.statusCode))
-                }
-            }
-            
-            let decoder = JSONDecoder()
-            
-            do {
-                if let data = data {
-                    let routes = try decoder.decode(V3Routes.self, from: data)
-                    
-                    requestCompletionHandler(routes, nil)
-                }
-                
-            } catch {
-                requestCompletionHandler(nil, PTVSwiftError.decodeResponseModelError(error))
-            }
-        }
-        
-        return dataTask
     }
 }

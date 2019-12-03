@@ -19,26 +19,42 @@ final class RoutesEndpointTests: XCTestCase {
     func testRoutesWithRouteTypes() {
         let expectation = XCTestExpectation(description: "Routes API request")
         
-        Routes().getAllRoutes(routeTypes: [0, 1]) { response, error in
-            XCTAssertNotNil(response, "Response is nil!")
-            XCTAssertNil(error, "Error has occurred!")
-            
-            expectation.fulfill()
+        let result = Routes().getAllRoutes(routeTypes: [0, 1])
+        
+        guard let publisher = try? result.get() else {
+            return XCTFail("Publisher failed to be created!")
         }
         
+        let cancellable = publisher
+            .receive(on: RunLoop.main)
+            .sink(receiveCompletion: { error in
+                XCTFail("Failed with error: \(error)")
+            }, receiveValue: { result in
+                XCTAssert(result.routes.count > 0, "Directions does not contain any results!")
+                expectation.fulfill()
+            })
+
         XCTWaiter().wait(for: [expectation], timeout: 10.0)
     }
     
     func testRoutesWithoutRouteTypes() {
        let expectation = XCTestExpectation(description: "Routes API request")
         
-        Routes().getAllRoutes(routeTypes: nil) { response, error in
-            XCTAssertNotNil(response, "Response is nil!")
-            XCTAssertNil(error, "Error has occurred!")
-            
-            expectation.fulfill()
+        let result = Routes().getAllRoutes(routeTypes: nil)
+        
+        guard let publisher = try? result.get() else {
+            return XCTFail("Publisher failed to be created!")
         }
         
+        let cancellable = publisher
+            .receive(on: RunLoop.main)
+            .sink(receiveCompletion: { error in
+                XCTFail("Failed with error: \(error)")
+            }, receiveValue: { result in
+                XCTAssert(result.routes.count > 0, "Directions does not contain any results!")
+                expectation.fulfill()
+            })
+
         XCTWaiter().wait(for: [expectation], timeout: 15.0)
     }
 }
