@@ -12,52 +12,22 @@ public class Routes {
     public init() {}
 
     public func getAllRoutes(routeTypes: [Int]?, requestCompletionHandler: @escaping (V3Routes?, PTVSwiftError?) -> ())  {
-        let requestURLComponents = constructURL(routeTypes: routeTypes)
-
-        guard let signedURLComponents = try? SigningService().signURL(urlComponents: requestURLComponents) else {
-            return requestCompletionHandler(nil, PTVSwiftError.signURLError)
-        }
-        
-        guard let signedRequestURL = signedURLComponents.url else {
-            return requestCompletionHandler(nil, PTVSwiftError.conversionToURLError)
-        }
-        
-        let dataTask = createDataTask(url: signedRequestURL, requestCompletionHandler: requestCompletionHandler)
-        
-        dataTask.resume()
-    }
-    
-    public func getAllRoutesURL(routeTypes: [Int]?) -> Result<URL, PTVSwiftError> {
-        let requestURLComponents = constructURL(routeTypes: routeTypes)
-        
-        guard let signedURLComponents = try? SigningService().signURL(urlComponents: requestURLComponents) else {
-            return .failure(PTVSwiftError.signURLError)
-        }
-        
-        guard let signedRequestURL = signedURLComponents.url else {
-            return .failure(PTVSwiftError.conversionToURLError)
-        }
-        
-        return .success(signedRequestURL)
-    }
-    
-    func constructURL(routeTypes: [Int]?) -> URLComponents {
-        var routeTypesQuery: URLQueryItem?
+        var urlParameters: [String: Any]? = nil
         
         if let routeTypes = routeTypes {
-            routeTypesQuery = URLQueryItem(name: "route_types", value: routeTypes.description)
+            urlParameters = ["route_types": routeTypes]
         }
         
-        var requestURLComponents = URLComponents()
-        requestURLComponents.scheme = PROTOCOL
-        requestURLComponents.host = BASE_URL
-        requestURLComponents.path = "/\(VERSION)/routes"
+        let urlResult = ConstructURL.generateURL(path: "routes", parameters: urlParameters)
         
-        if let routeTypesQuery = routeTypesQuery {
-            requestURLComponents.queryItems = [routeTypesQuery]
+        switch urlResult {
+        case .success(let url):
+            let dataTask = createDataTask(url: url, requestCompletionHandler: requestCompletionHandler)
+            
+            dataTask.resume()
+        case .failure(_):
+            return requestCompletionHandler(nil, PTVSwiftError.conversionToURLError)
         }
-        
-        return requestURLComponents
     }
     
     func createDataTask(url: URL, requestCompletionHandler: @escaping (V3Routes?, PTVSwiftError?) -> ()) -> URLSessionDataTask {
