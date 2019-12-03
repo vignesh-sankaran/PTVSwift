@@ -33,14 +33,12 @@ final class DirectionsEndpointsTests: XCTestCase {
         }
         
         // Named constant needs to be declared, else a runtime error is thrown
-        //
-        // This test will sometimes fail due to the error closure being non
-        // deterministically called even though the request is successful.
         let cancellable = publisher
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: { error in
-                XCTFail("Failed with error: \(error)")
-                expectation.fulfill()
+                if case .failure(let failureError) = error {
+                    XCTFail("Failed with error: \(failureError)")
+                }
             }, receiveValue: { result in
                 XCTAssert(result.directions.count > 0, "Directions does not contain any results!")
                 expectation.fulfill()

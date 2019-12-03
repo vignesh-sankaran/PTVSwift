@@ -28,7 +28,9 @@ final class RoutesEndpointTests: XCTestCase {
         let cancellable = publisher
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: { error in
-                XCTFail("Failed with error: \(error)")
+                if case .failure(let failureError) = error {
+                    XCTFail("Failed with error: \(failureError)")
+                }
             }, receiveValue: { result in
                 XCTAssert(result.routes.count > 0, "Directions does not contain any results!")
                 expectation.fulfill()
@@ -49,7 +51,9 @@ final class RoutesEndpointTests: XCTestCase {
         let cancellable = publisher
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: { error in
-                XCTFail("Failed with error: \(error)")
+                if case .failure(let failureError) = error {
+                    XCTFail("Failed with error: \(failureError)")
+                }
             }, receiveValue: { result in
                 XCTAssert(result.routes.count > 0, "Directions does not contain any results!")
                 expectation.fulfill()
