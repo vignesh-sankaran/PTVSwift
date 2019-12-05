@@ -26,12 +26,22 @@ final class StopsEndpointTests: XCTestCase {
     func testStopsByRouteId() {
         let expectation = XCTestExpectation(description: "Stops API request")
         
-        Stops().getStopsByRouteId(routeId: 12, routeType: 0) { response, error in
-            XCTAssertNotNil(response, "Response is nil!")
-            XCTAssertNil(error, "Error has occurred!")
-            
-            expectation.fulfill()
+        let result = Stops().getStopsByRouteId(routeId: 12, routeType: 0)
+        
+        guard let publisher = try? result.get() else {
+            return XCTFail("Publisher failed to be created!")
         }
+        
+        let cancellable = publisher
+            .receive(on: RunLoop.main)
+            .sink(receiveCompletion: { error in
+                if case .failure(let failureError) = error {
+                    XCTFail("Failed with error: \(failureError)")
+                }
+            }, receiveValue: { result in
+                XCTAssert(result.stops.count > 0, "Directions does not contain any results!")
+                expectation.fulfill()
+            })
         
         XCTWaiter().wait(for: [expectation], timeout: 10.0)
     }

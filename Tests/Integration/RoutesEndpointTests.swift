@@ -59,6 +59,6 @@ final class RoutesEndpointTests: XCTestCase {
                 expectation.fulfill()
             })
 
-        XCTWaiter().wait(for: [expectation], timeout: 15.0)
+        XCTWaiter().wait(for: [expectation], timeout: 10.0)
     }
 }
