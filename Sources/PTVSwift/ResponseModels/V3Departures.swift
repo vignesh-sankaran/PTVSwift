@@ -8,21 +8,21 @@
 import Foundation
 
 public struct V3Departures: Decodable {
-    let departures: [V3Departure]
+    public let departures: [V3Departure]
 }
 
 public struct V3Departure: Decodable {
-    let stopId: Int
-    let routeId: Int
-    let runId: Int
-    let directionId: Int
-    let disruptionIds: [Int]
-    let scheduledDepartureTime: String
-    let estimatedDepartureTime: String?
-    let atPlatform: Bool
-    let platformNumber: Int?
-    let flags: String
-    let departureSequence: Int
+    public let stopId: Int
+    public let routeId: Int
+    public let runId: Int
+    public let directionId: Int
+    public let disruptionIds: [Int]
+    public let scheduledDepartureTime: String
+    public let estimatedDepartureTime: String?
+    public let atPlatform: Bool
+    public let platformNumber: Int?
+    public let flags: String
+    public let departureSequence: Int
     
     enum CodingKeys: String, CodingKey {
         case stopId = "stop_id"
