@@ -20,7 +20,7 @@ public struct V3Departure: Decodable {
     public let scheduledDepartureTime: String
     public let estimatedDepartureTime: String?
     public let atPlatform: Bool
-    public let platformNumber: Int?
+    public let platformNumber: String?
     public let flags: String
     public let departureSequence: Int
     
