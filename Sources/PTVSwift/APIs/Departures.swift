@@ -12,8 +12,13 @@ public class Departures {
     
     public init() {}
     
-    public func getDepartures(routeType: Int, stopId: Int) -> Result<AnyPublisher<V3Departures, Error>, Error> {
-        let path = "departures/route_type/\(routeType)/stop/\(stopId)"
+    public func getDepartures(routeType: Int, stopId: Int, routeId: Int? = nil) -> Result<AnyPublisher<V3Departures, Error>, Error> {
+        var path = "departures/route_type/\(routeType)/stop/\(stopId)"
+        
+        if let routeId = routeId {
+            path += "/route/\(routeId)"
+        }
+        
         let urlResult = ConstructURL.generateURL(path: path, parameters: nil)
         
         switch urlResult {

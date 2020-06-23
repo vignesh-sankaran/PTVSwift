@@ -45,4 +45,26 @@ final class DeparturesEndpointsTests: XCTestCase {
         
         XCTWaiter().wait(for: [expectation], timeout: 10.0)
     }
+    
+    func testGetAllDeparturesWithRouteIdForStop() {
+        let expectation = XCTestExpectation(description: "Departures API request")
+        let result = Departures().getDepartures(routeType: 0, stopId: 1182, routeId: 1)
+        
+        guard let publisher = try? result.get() else {
+            return XCTFail("Publisher failed to be created!")
+        }
+        
+        let cancellable = publisher
+            .receive(on: RunLoop.main)
+            .sink(receiveCompletion: { error in
+                if case .failure(let failureError) = error {
+                    XCTFail("Failed with error: \(failureError)")
+                }
+            }, receiveValue: { result in
+                XCTAssert(result.departures.count > 0, "Departures contains no results!")
+                expectation.fulfill()
+            })
+        
+        XCTWaiter().wait(for: [expectation], timeout: 10.0)
+    }
 }
